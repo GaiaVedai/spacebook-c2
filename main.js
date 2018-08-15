@@ -1,28 +1,6 @@
 var SpacebookApp = function () {
   return {
-    posts: [
-      {
-        text: "Hello world", id: 1, comments: [
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" }
-        ]
-      },
-      {
-        text: "Hello world", id: 2, comments: [
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" }
-        ]
-      },
-      {
-        text: "Hello world", id: 3, comments: [
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" },
-          { text: "Man, this is a comment!" }
-        ]
-      }
-    ],
+    posts: [],
 
     // the current id to assign to a post
     currentId: 4,
@@ -44,7 +22,6 @@ var SpacebookApp = function () {
       }
 
       this.currentId += 1;
-
       this.posts.push(post);
     },
 
@@ -98,11 +75,19 @@ var SpacebookApp = function () {
       }
       str+="</ul>";
       return str;
+    },
+
+    saveToLocalStorage: function (posts) {
+      localStorage.setItem(STORAGE_ID, JSON.stringify(posts));
+    },
+    getFromLocalStorage: function () {
+      return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
     }
   };
 }
 
 var app = SpacebookApp();
+let STORAGE_ID = 'spacebook';
 
 // immediately invoke the render method
 app.renderPosts();
@@ -112,6 +97,7 @@ $('.add-post').on('click', function () {
   var text = $('#post-name').val();
 
   app.createPost(text);
+  app.saveToLocalStorage()
   app.renderPosts();
 });
 
@@ -121,6 +107,7 @@ $('.posts').on('click', '.remove', function () {
   var postID = $clickedPost.data().id;
 
   app.removePost(postID);
+  app.saveToLocalStorage()
   app.renderPosts();
 });
 
@@ -135,6 +122,7 @@ $('.posts').on('click', '.add-comment', function () {
   var postID = $clickedPost.data().id;
 
   app.createComment(text, postID);
+  app.saveToLocalStorage()
   app.renderPosts();
 });
 
