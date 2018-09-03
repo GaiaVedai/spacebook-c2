@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 
 const SERVER_PORT = (process.env.PORT || 8000);
 
-mongoose.connect('mongodb://localhost/spacebookDB', function () {
+mongoose.connect(process.env.CONNECTION_STRING||'mongodb://localhost/spacebookDB', function () {
   console.log("DB connection established!!!");
 })
 
