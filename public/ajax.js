@@ -1,7 +1,7 @@
 
 class Ajax {
     constructor(postsRepository) {
-        this.postsRepository = postsRepository
+        // this.postsRepository = postsRepository
     }
 
     getDBData() {
@@ -9,14 +9,21 @@ class Ajax {
             method: 'GET',
             url: '/posts'
         })
-            .then( (data)=> {
-                console.log(data)
-                this.postsRepository.posts = data
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
-                return ('something went wrong')
-            })
+          
+    }
+    addToDB(posts){
+        return $.ajax({
+            method: 'POST',
+            url: '/posts',
+            data: posts,
+        })
+    }
+    RemoveFromDB(postId){
+        return $.ajax({
+            method: 'DELETE',
+            url: '/posts/'+postId,
+            data: postId,
+        })
     }
 }
 
